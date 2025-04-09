@@ -8,12 +8,28 @@ from llama_cookbook.datasets.alpaca_dataset import InstructionDataset as get_alp
 from llama_cookbook.datasets.custom_dataset import get_custom_dataset,get_data_collator
 from llama_cookbook.datasets.samsum_dataset import get_preprocessed_samsum as get_samsum_dataset
 from llama_cookbook.datasets.toxicchat_dataset import get_llamaguard_toxicchat_dataset as get_llamaguard_toxicchat_dataset
+from llama_cookbook.datasets.narrative_qa import get_preprocessed_narrative_qa as get_narrative_qa_dataset
+from llama_cookbook.datasets.narrative_qa import get_memory_narrative_qa as get_memory_narrative_qa_dataset
+
+# Create partial functions with default answer strategies
+get_memory_narrative_qa_random = partial(get_memory_narrative_qa, answer_strategy="random")
+# get_memory_narrative_qa_first = partial(get_memory_narrative_qa, answer_strategy="first")
+# get_memory_narrative_qa_longest = partial(get_memory_narrative_qa, answer_strategy="longest")
+# get_memory_narrative_qa_shortest = partial(get_memory_narrative_qa, answer_strategy="shortest")
+get_memory_narrative_qa_consensus = partial(get_memory_narrative_qa, answer_strategy="consensus")
+
 DATASET_PREPROC = {
     "alpaca_dataset": partial(get_alpaca_dataset),
     "grammar_dataset": get_grammar_dataset,
     "samsum_dataset": get_samsum_dataset,
     "custom_dataset": get_custom_dataset,
     "llamaguard_toxicchat_dataset": get_llamaguard_toxicchat_dataset,
+    "narrative_qa_dataset": get_narrative_qa_dataset,
+    "memory_narrative_qa_dataset": get_memory_narrative_qa_random,  # Default to random strategy
+    # "memory_narrative_qa_first": get_memory_narrative_qa_first,
+    # "memory_narrative_qa_longest": get_memory_narrative_qa_longest,
+    # "memory_narrative_qa_shortest": get_memory_narrative_qa_shortest,
+    "memory_narrative_qa_consensus": get_memory_narrative_qa_consensus,
 }
 DATALOADER_COLLATE_FUNC = {
     "custom_dataset": get_data_collator
